@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const router = express.Router();
 
-// Get
+// Reads the tips from the file 
 router.get("/api/notes", (req, res) => {
     fs.readFile("./db/db.json", "utf8", (err, data) => {
         if (err) {
@@ -17,7 +17,7 @@ router.get("/api/notes", (req, res) => {
     });
 });
 
-// POST
+// Creates a new note inside the file
 router.post("/api/notes", (req, res) => {
     let noteDB = fs.readFileSync('./db/db.json');
     noteDB = JSON.parse(noteDB)
@@ -26,7 +26,7 @@ router.post("/api/notes", (req, res) => {
     const newNote = {
         title: req.body.title,
         text: req.body.text,
-        // 
+        // Generates random ID
         id: uuidv4(),
     }
     noteDB.push(newNote)
@@ -34,6 +34,7 @@ router.post("/api/notes", (req, res) => {
     res.json(newNote)
 });
 
+// Deletes the tip in the file
 router.delete("/api/notes/:id", (req, res) => {
     let deleteDB = fs.readFileSync('./db/db.json')
     deleteDB = JSON.parse(deleteDB)
